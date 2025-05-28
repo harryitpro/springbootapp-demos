@@ -19,8 +19,8 @@
         <version>3.5.0</version>
     </parent>
     <modules>
-        <module>phonebook-resource</module>
         <module>common</module>
+        <module>contact-resource</module>
     </modules>
     <dependencyManagement>
         <dependencies>
