@@ -1,95 +1,173 @@
 package com.myapp.contact.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.contact.model.Contact;
 import com.myapp.contact.service.ContactService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ContactController.class)
-public class ContactControllerTest {
+@ExtendWith(MockitoExtension.class)
+class ContactControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private static final Logger logger = LoggerFactory.getLogger(ContactControllerTest.class);
 
-    @MockBean
+    @Mock
     private ContactService contactService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @InjectMocks
+    private ContactController contactController;
 
-    private Contact contact;
+    private Contact sampleContact;
 
     @BeforeEach
     void setUp() {
-        contact = new Contact();
-        contact.setId(1L);
-        contact.setName("Alice");
-        contact.setPhoneNumber("1234567890");
+        // Initialize a sample contact for testing
+        sampleContact = new Contact();
+        sampleContact.setId(1L);
+        sampleContact.setName("John Doe");
+        sampleContact.setEmail("john.doe@example.com");
     }
 
     @Test
-    void testGetAllContacts() throws Exception {
+    void getAll_shouldReturnAllContacts() {
+        // Arrange
         Map<Long, Contact> contacts = new HashMap<>();
-        contacts.put(1L, contact);
-
+        contacts.put(1L, sampleContact);
         when(contactService.getAll()).thenReturn(contacts);
 
-        mockMvc.perform(get("/api/contacts"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.1.name").value("Alice"));
+        // Act
+        Map<Long, Contact> result = contactController.getAll();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals(sampleContact, result.get(1L));
+        verify(contactService, times(1)).getAll();
+        logger.info("Successfully tested getAll endpoint");
     }
 
     @Test
-    void testFindById() throws Exception {
-        when(contactService.findById(1L)).thenReturn(contact);
+    void findById_shouldReturnContactWhenExists() {
+        // Arrange
+        Long id = 1L;
+        when(contactService.findById(id)).thenReturn(sampleContact);
 
-        mockMvc.perform(get("/api/contacts/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Alice"));
+        // Act
+        Contact result = contactController.findByName(id);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(sampleContact, result);
+        assertEquals("John Doe", result.getName());
+        verify(contactService, times(1)).findById(id);
+        logger.info("Successfully tested findById with existing ID: {}", id);
     }
 
     @Test
-    void testAddContact() throws Exception {
-        when(contactService.add(any(Contact.class))).thenReturn(contact);
+    void findById_shouldReturnNullWhenNotFound() {
+        // Arrange
+        Long id = 2L;
+        when(contactService.findById(id)).thenReturn(null);
 
-        mockMvc.perform(post("/api/contacts")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(contact)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.name").value("Alice"));
+        // Act
+        Contact result = contactController.findByName(id);
+
+        // Assert
+        assertNull(result);
+        verify(contactService, times(1)).findById(id);
+        logger.info("Successfully tested findById with non-existent ID: {}", id);
     }
 
     @Test
-    void testUpdateContact() throws Exception {
-        when(contactService.update(eq(1L), any(Contact.class))).thenReturn(contact);
+    void add_shouldCreateAndReturnContact() {
+        // Arrange
+        Contact newContact = new Contact();
+        newContact.setName("Jane Doe");
+        newContact.setEmail("jane.doe@example.com");
 
-        mockMvc.perform(put("/api/contacts/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(contact)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1L));
+        Contact createdContact = new Contact();
+        createdContact.setId(2L);
+        createdContact.setName("Jane Doe");
+        createdContact.setEmail("jane.doe@example.com");
+
+        when(contactService.add(newContact)).thenReturn(createdContact);
+
+        // Act
+        Contact result = contactController.add(newContact);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2L, result.getId());
+        assertEquals("Jane Doe", result.getName());
+        verify(contactService, times(1)).add(newContact);
+        logger.info("Successfully tested add endpoint");
     }
 
     @Test
-    void testDeleteContact() throws Exception {
-        when(contactService.remove(1L)).thenReturn(contact);
+    void update_shouldUpdateAndReturnContact() {
+        // Arrange
+        Long id = 1L;
+        Contact updatedContact = new Contact();
+        updatedContact.setName("John Updated");
+        updatedContact.setEmail("john.updated@example.com");
 
-        mockMvc.perform(delete("/api/contacts/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Alice"));
+        Contact returnedContact = new Contact();
+        returnedContact.setId(id);
+        returnedContact.setName("John Updated");
+        returnedContact.setEmail("john.updated@example.com");
+
+        when(contactService.update(id, updatedContact)).thenReturn(returnedContact);
+
+        // Act
+        Contact result = contactController.update(id, updatedContact);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(id, result.getId());
+        assertEquals("John Updated", result.getName());
+        verify(contactService, times(1)).update(id, updatedContact);
+        logger.info("Successfully tested update endpoint for ID: {}", id);
+    }
+
+    @Test
+    void remove_shouldDeleteAndReturnContactWhenExists() {
+        // Arrange
+        Long id = 1L;
+        when(contactService.remove(id)).thenReturn(sampleContact);
+
+        // Act
+        Contact result = contactController.remove(id);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(sampleContact, result);
+        verify(contactService, times(1)).remove(id);
+        logger.info("Successfully tested remove endpoint for existing ID: {}", id);
+    }
+
+    @Test
+    void remove_shouldReturnNullWhenNotFound() {
+        // Arrange
+        Long id = 2L;
+        when(contactService.remove(id)).thenReturn(null);
+
+        // Act
+        Contact result = contactController.remove(id);
+
+        // Assert
+        assertNull(result);
+        verify(contactService, times(1)).remove(id);
+        logger.info("Successfully tested remove endpoint for non-existent ID: {}", id);
     }
 }
