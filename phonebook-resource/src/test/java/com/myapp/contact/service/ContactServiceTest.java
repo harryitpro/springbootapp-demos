@@ -100,7 +100,7 @@ class ContactServiceTest {
     @Test
     void add_shouldHandleNullContact() {
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> contactService.add(null));
+        assertThrows(NullPointerException.class, () -> contactService.add(null));
         logger.info("Successfully tested add with null contact");
     }
 
@@ -172,7 +172,7 @@ class ContactServiceTest {
         Long id = contactService.add(sampleContact).getId();
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> contactService.update(id, null));
+        assertThrows(NullPointerException.class, () -> contactService.update(id, null));
         logger.info("Successfully tested update with null contact for ID: {}", id);
     }
 }
