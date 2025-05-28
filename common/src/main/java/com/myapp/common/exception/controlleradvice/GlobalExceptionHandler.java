@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 HttpStatus.NOT_FOUND.value()
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
@@ -40,6 +40,6 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value()
         );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
