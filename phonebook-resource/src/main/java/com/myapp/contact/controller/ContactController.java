@@ -1,7 +1,7 @@
-package com.myapp.controller;
+package com.myapp.contact.controller;
 
-import com.myapp.model.Contact;
-import com.myapp.service.ContactService;
+import com.myapp.contact.model.Contact;
+import com.myapp.contact.service.ContactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;

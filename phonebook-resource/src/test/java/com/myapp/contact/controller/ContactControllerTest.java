@@ -1,8 +1,8 @@
-package com.myapp.controller;
+package com.myapp.contact.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.myapp.model.Contact;
-import com.myapp.service.ContactService;
+import com.myapp.contact.model.Contact;
+import com.myapp.contact.service.ContactService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

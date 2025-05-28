@@ -1,6 +1,6 @@
-package com.myapp.service;
+package com.myapp.contact.service;
 
-import com.myapp.model.Contact;
+import com.myapp.contact.model.Contact;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
