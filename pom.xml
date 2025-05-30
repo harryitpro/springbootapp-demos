@@ -38,6 +38,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -84,5 +88,6 @@
         <module>error-handling</module>
         <module>api-resource</module>
         <module>auth-service</module>
+        <module>log-service</module>
     </modules>
 </project>
