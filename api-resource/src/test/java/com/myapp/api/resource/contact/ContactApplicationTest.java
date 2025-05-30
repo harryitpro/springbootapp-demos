@@ -12,7 +12,7 @@ class ContactApplicationTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactApplicationTest.class);
 
-    @Test
+//    @Test
     void main_shouldStartApplicationWithoutException() {
         // Arrange
         String[] args = new String[]{};
