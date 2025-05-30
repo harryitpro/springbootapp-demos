@@ -89,5 +89,7 @@
         <module>api-resource</module>
         <module>auth-service</module>
         <module>log-service</module>
+        <module>poc-jms</module>
+        <module>poc-kafka</module>
     </modules>
 </project>
