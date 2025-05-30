@@ -91,5 +91,6 @@
         <module>log-service</module>
         <module>poc-jms</module>
         <module>poc-kafka</module>
+        <module>poc-auth-defaultauth</module>
     </modules>
 </project>
