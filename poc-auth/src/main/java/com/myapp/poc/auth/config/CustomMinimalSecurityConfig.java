@@ -24,7 +24,4 @@ public class CustomMinimalSecurityConfig {
         ;
         return httpSecurity.build();
     }
-
-    //@Profile("minimal")
-    //no extra SecurityFilterChain bean defined.
 }
