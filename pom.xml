@@ -91,5 +91,6 @@
         <module>poc-jms</module>
         <module>poc-kafka</module>
         <module>poc-auth</module>
+        <module>common-utilities</module>
     </modules>
 </project>

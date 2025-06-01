@@ -8,19 +8,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ContactControllerTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(ContactControllerTest.class);
 
     @Mock
     private ContactService contactService;
@@ -32,7 +33,7 @@ class ContactControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Initialize a sample contact for testing
+        // Initialize sample contact for tests
         sampleContact = new Contact();
         sampleContact.setId(1L);
         sampleContact.setName("John Doe");
@@ -40,134 +41,108 @@ class ContactControllerTest {
     }
 
     @Test
-    void getAll_shouldReturnAllContacts() {
+    void getAllContacts_shouldReturnAllContacts() {
         // Arrange
         Map<Long, Contact> contacts = new HashMap<>();
         contacts.put(1L, sampleContact);
         when(contactService.getAll()).thenReturn(contacts);
 
         // Act
-        Map<Long, Contact> result = contactController.getAll();
+        ResponseEntity<Map<Long, Contact>> response = contactController.getAllContacts();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals(sampleContact, result.get(1L));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(contacts, response.getBody());
+        assertEquals(1, response.getBody().size());
         verify(contactService, times(1)).getAll();
-        logger.info("Successfully tested getAll endpoint");
     }
 
     @Test
-    void findById_shouldReturnContactWhenExists() {
+    void getContactById_shouldReturnContact_whenFound() {
         // Arrange
-        Long id = 1L;
-        when(contactService.findById(id)).thenReturn(sampleContact);
+        when(contactService.findById(1L)).thenReturn(sampleContact);
 
         // Act
-        Contact result = contactController.findByName(id);
+        ResponseEntity<Contact> response = contactController.getContactById(1L);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(sampleContact, result);
-        assertEquals("John Doe", result.getName());
-        verify(contactService, times(1)).findById(id);
-        logger.info("Successfully tested findById with existing ID: {}", id);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(sampleContact, response.getBody());
+        verify(contactService, times(1)).findById(1L);
     }
 
     @Test
-    void findById_shouldReturnNullWhenNotFound() {
+    void getContactById_shouldReturnNotFound_whenContactDoesNotExist() {
         // Arrange
-        Long id = 2L;
-        when(contactService.findById(id)).thenReturn(null);
+        when(contactService.findById(1L)).thenReturn(null);
 
         // Act
-        Contact result = contactController.findByName(id);
+        ResponseEntity<Contact> response = contactController.getContactById(1L);
 
         // Assert
-        assertNull(result);
-        verify(contactService, times(1)).findById(id);
-        logger.info("Successfully tested findById with non-existent ID: {}", id);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(contactService, times(1)).findById(1L);
     }
 
     @Test
-    void add_shouldCreateAndReturnContact() {
+    void createContact_shouldCreateAndReturnContact() {
         // Arrange
-        Contact newContact = new Contact();
-        newContact.setName("Jane Doe");
-        newContact.setEmail("jane.doe@example.com");
-
-        Contact createdContact = new Contact();
-        createdContact.setId(2L);
-        createdContact.setName("Jane Doe");
-        createdContact.setEmail("jane.doe@example.com");
-
-        when(contactService.add(newContact)).thenReturn(createdContact);
+        when(contactService.add(any(Contact.class))).thenReturn(sampleContact);
 
         // Act
-        Contact result = contactController.add(newContact);
+        ResponseEntity<Contact> response = contactController.createContact(sampleContact);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(2L, result.getId());
-        assertEquals("Jane Doe", result.getName());
-        verify(contactService, times(1)).add(newContact);
-        logger.info("Successfully tested add endpoint");
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(sampleContact, response.getBody());
+        verify(contactService, times(1)).add(any(Contact.class));
     }
 
     @Test
-    void update_shouldUpdateAndReturnContact() {
+    void updateContact_shouldUpdateAndReturnContact() {
         // Arrange
-        Long id = 1L;
         Contact updatedContact = new Contact();
-        updatedContact.setName("John Updated");
-        updatedContact.setEmail("john.updated@example.com");
-
-        Contact returnedContact = new Contact();
-        returnedContact.setId(id);
-        returnedContact.setName("John Updated");
-        returnedContact.setEmail("john.updated@example.com");
-
-        when(contactService.update(id, updatedContact)).thenReturn(returnedContact);
+        updatedContact.setId(1L);
+        updatedContact.setName("Jane Doe");
+        updatedContact.setEmail("jane.doe@example.com");
+        when(contactService.update(eq(1L), any(Contact.class))).thenReturn(updatedContact);
 
         // Act
-        Contact result = contactController.update(id, updatedContact);
+        ResponseEntity<Contact> response = contactController.updateContact(1L, updatedContact);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(id, result.getId());
-        assertEquals("John Updated", result.getName());
-        verify(contactService, times(1)).update(id, updatedContact);
-        logger.info("Successfully tested update endpoint for ID: {}", id);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updatedContact, response.getBody());
+        assertEquals("Jane Doe", response.getBody().getName());
+        verify(contactService, times(1)).update(eq(1L), any(Contact.class));
     }
 
     @Test
-    void remove_shouldDeleteAndReturnContactWhenExists() {
+    void deleteContact_shouldDeleteAndReturnContact_whenFound() {
         // Arrange
-        Long id = 1L;
-        when(contactService.remove(id)).thenReturn(sampleContact);
+        when(contactService.remove(1L)).thenReturn(sampleContact);
 
         // Act
-        Contact result = contactController.remove(id);
+        ResponseEntity<Contact> response = contactController.deleteContact(1L);
 
         // Assert
-        assertNotNull(result);
-        assertEquals(sampleContact, result);
-        verify(contactService, times(1)).remove(id);
-        logger.info("Successfully tested remove endpoint for existing ID: {}", id);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(sampleContact, response.getBody());
+        verify(contactService, times(1)).remove(1L);
     }
 
     @Test
-    void remove_shouldReturnNullWhenNotFound() {
+    void deleteContact_shouldReturnNotFound_whenContactDoesNotExist() {
         // Arrange
-        Long id = 2L;
-        when(contactService.remove(id)).thenReturn(null);
+        when(contactService.remove(1L)).thenReturn(null);
 
         // Act
-        Contact result = contactController.remove(id);
+        ResponseEntity<Contact> response = contactController.deleteContact(1L);
 
         // Assert
-        assertNull(result);
-        verify(contactService, times(1)).remove(id);
-        logger.info("Successfully tested remove endpoint for non-existent ID: {}", id);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(contactService, times(1)).remove(1L);
     }
 }
