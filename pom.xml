@@ -85,12 +85,12 @@
         </plugins>
     </build>
     <modules>
-        <module>error-handling</module>
-        <module>api-resource</module>
-        <module>log-service</module>
         <module>poc-jms</module>
         <module>poc-kafka</module>
         <module>poc-auth</module>
         <module>common-utilities</module>
+        <module>component-auth</module>
+        <module>component-exception</module>
+        <module>component-logging</module>
     </modules>
 </project>

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Profile({"default","custom-minimal"})
 @RestController
 @RequestMapping("/api")
-public class AuthDemoController {
+public class DefaultAuthDemoController {
     @GetMapping("/public")
     public String getPublicResource() {
         return "public resource returned.";
