@@ -1,4 +1,4 @@
-package com.myapp.api.resource.contact.model;
+package com.myapp.service.contact.model;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

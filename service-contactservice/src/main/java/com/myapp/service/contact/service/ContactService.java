@@ -1,6 +1,7 @@
-package com.myapp.api.resource.contact.service;
+package com.myapp.service.contact.service;
 
-import com.myapp.api.resource.contact.model.Contact;
+
+import com.myapp.service.contact.model.Contact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

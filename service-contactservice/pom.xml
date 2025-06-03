@@ -9,8 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>service-contactservice</artifactId>
-    <name>Contact service application</name>
-    <description>Contact service application</description>
+    <name>contacts service</name>
+    <description>Contacts service application</description>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

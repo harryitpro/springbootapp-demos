@@ -1,7 +1,7 @@
-package com.myapp.api.resource.contact.controller;
+package com.myapp.service.contact.controller;
 
-import com.myapp.api.resource.contact.model.Contact;
-import com.myapp.api.resource.contact.service.ContactService;
+import com.myapp.service.contact.model.Contact;
+import com.myapp.service.contact.service.ContactService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
