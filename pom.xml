@@ -85,12 +85,12 @@
         </plugins>
     </build>
     <modules>
-        <module>poc-jms</module>
-        <module>poc-kafka</module>
-        <module>poc-auth</module>
+        <module>poc-jms-messaging</module>
+        <module>poc-kafka-streaming</module>
+        <module>poc-authentication</module>
         <module>common</module>
-        <module>poc-oidc</module>
-        <module>service-auth-server</module>
-        <module>service-contactservice</module>
+        <module>poc-openid-connect</module>
+        <module>service-authentication</module>
+        <module>service-contact</module>
     </modules>
 </project>
