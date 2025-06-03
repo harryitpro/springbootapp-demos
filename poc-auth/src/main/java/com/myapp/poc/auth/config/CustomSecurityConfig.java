@@ -33,17 +33,15 @@ public class CustomSecurityConfig {
         http
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/login").permitAll() // Explicitly allow /login
-                        .requestMatchers("/api/**").authenticated()
+//                        .requestMatchers("/login").permitAll() // Explicitly allow /login
+//                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                .formLogin((form) -> form
-                        .permitAll()
-                )
+                .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .permitAll()
+//                        .logoutUrl("/logout")
+//                        .permitAll()
                         .logoutSuccessUrl("/api/public")
                 )
                 .exceptionHandling((exceptions) -> exceptions

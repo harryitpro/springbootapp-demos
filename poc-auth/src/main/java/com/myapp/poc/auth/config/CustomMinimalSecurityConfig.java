@@ -14,10 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class CustomMinimalSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(
-                        auth -> auth
-                                .requestMatchers("/api/public/**").permitAll()
-                                .anyRequest().authenticated()
+        httpSecurity
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/public/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())

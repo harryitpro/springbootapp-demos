@@ -88,9 +88,9 @@
         <module>poc-jms</module>
         <module>poc-kafka</module>
         <module>poc-auth</module>
-        <module>common-utilities</module>
-        <module>component-auth</module>
-        <module>component-exception</module>
-        <module>component-logging</module>
+        <module>common</module>
+        <module>poc-oidc</module>
+        <module>service-auth-server</module>
+        <module>service-contactservice</module>
     </modules>
 </project>
