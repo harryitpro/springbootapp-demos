@@ -8,8 +8,9 @@
         <artifactId>springbootapp-demos</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
     <artifactId>component-exception</artifactId>
+    <name></name>
+    <description></description>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

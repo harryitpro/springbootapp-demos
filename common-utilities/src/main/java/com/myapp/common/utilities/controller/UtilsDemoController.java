@@ -18,9 +18,21 @@ public class UtilsDemoController {
         return Map.of("token", token);
     }
 
-    @PostMapping("/jwt/parse")
+    @PostMapping("/jwt/parse/hs256")
     public Map<String, Object> parseToken(@RequestParam String token) {
-        Jws<Claims> jws = JwtUtil.parseToken(token);
+        Jws<Claims> jws = JwtUtil.parseToken_hs256(token);
+        Claims claims = jws.getBody();
+        return Map.of(
+                "subject", claims.getSubject(),
+                "roles", claims.get("roles"),
+                "issuedAt", claims.getIssuedAt(),
+                "expiration", claims.getExpiration()
+        );
+    }
+
+    @PostMapping("/jwt/parse/rs256")
+    public Map<String, Object> parseToken_rs256(@RequestParam String token) {
+        Jws<Claims> jws = JwtUtil.parseToken_rs256(token);
         Claims claims = jws.getBody();
         return Map.of(
                 "subject", claims.getSubject(),

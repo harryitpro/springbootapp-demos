@@ -1,4 +1,4 @@
-package com.myapp.error.handling;
+package com.myapp.component.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

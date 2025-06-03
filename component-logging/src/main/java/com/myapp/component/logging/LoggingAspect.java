@@ -1,4 +1,4 @@
-package com.myapp.log.service;
+package com.myapp.component.logging;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
