@@ -8,7 +8,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class PocOauth2ClientDemoController {
+public class OidcAuthenticationController {
 
     @GetMapping("/user")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
