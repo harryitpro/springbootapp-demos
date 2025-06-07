@@ -1,0 +1,9 @@
+package com.myapp.common.config;
+
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan(basePackages = {"com.myapp.component"})
+public class CommonModuleConfiguration {
+}
