@@ -99,5 +99,7 @@
         <module>oauth2-m2m-resource-server</module>
         <module>kafka-log-producer-service</module>
         <module>kafka-log-aggregator-service</module>
+        <module>jms-demo</module>
+        <module>jms-order-message</module>
     </modules>
 </project>
