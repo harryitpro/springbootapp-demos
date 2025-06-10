@@ -8,7 +8,7 @@ import com.myapp.jms.model.Order;
 import jakarta.jms.DeliveryMode; // Correct Jakarta EE JMS API import
 import jakarta.jms.JMSException; // Correct Jakarta EE JMS API import
 import jakarta.jms.Message; // Correct Jakarta EE JMS API import
-import jakarta.jms.Session; // Correct Jakarta EE JMS API import
+// Correct Jakarta EE JMS API import
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessagePostProcessor;

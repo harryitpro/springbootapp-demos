@@ -91,7 +91,6 @@
     <modules>
         <module>common</module>
         <module>mvc-contact-app</module>
-        <module>jms-messaging</module>
         <module>kafka-streaming</module>
         <module>spring-security</module>
         <module>oauth2-oidc-authentication</module>
@@ -99,7 +98,6 @@
         <module>oauth2-m2m-resource-server</module>
         <module>kafka-log-producer-service</module>
         <module>kafka-log-aggregator-service</module>
-        <module>jms-demo</module>
         <module>jms-order-message</module>
     </modules>
 </project>
